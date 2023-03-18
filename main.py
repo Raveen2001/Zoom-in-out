@@ -52,7 +52,13 @@ def resize_image(img, new_width, new_height):
 def detect():
     model = YOLO("yolov8n.pt")  # load a pretrained model (recommended for training)
 
-    results = model(0, show=True, classes=[0], stream=True)  # predict on an image
+    results = model(
+        "sample5.jpg",
+        show=True,
+        classes=[0],
+        stream=True,
+        save=True,
+    )  # predict on an image
 
     for result in results:
         final_img_coordinates = [float("inf"), float("inf"), 0, 0]
@@ -85,8 +91,14 @@ def detect():
             final_img_coordinates[0] : final_img_coordinates[2],
         ]
 
-        resized = resize_image(cropped, 640, 480)
+        resized = None
+        if is_no_object_detected:
+            resized = cropped
+        else:
+            resized = resize_image(cropped, 640, 480)
+
         cv2.imshow("cropped", resized)
+        cv2.waitKey(0)
 
 
 detect()
