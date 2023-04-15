@@ -1,9 +1,9 @@
+from face import compare_faces, load_images
 from ultralytics import YOLO
 import cv2
 
 
 def resize_image(img, new_width, new_height):
-
     final_width = new_width
     final_height = new_height
 
@@ -53,7 +53,7 @@ def detect():
     model = YOLO("yolov8n.pt")  # load a pretrained model (recommended for training)
 
     results = model(
-        "sample5.jpg",
+        0,
         show=True,
         classes=[0],
         stream=True,
@@ -91,6 +91,8 @@ def detect():
             final_img_coordinates[0] : final_img_coordinates[2],
         ]
 
+        results = compare_faces(cropped)
+        print(results)
         resized = None
         if is_no_object_detected:
             resized = cropped
@@ -98,7 +100,8 @@ def detect():
             resized = resize_image(cropped, 640, 480)
 
         cv2.imshow("cropped", resized)
-        cv2.waitKey(0)
+        # cv2.waitKey(0)
 
 
+load_images()
 detect()
