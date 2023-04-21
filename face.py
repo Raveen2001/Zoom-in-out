@@ -37,4 +37,4 @@ def compare_faces(unknown_image):
     return results
 
 
-# load_images()
+
